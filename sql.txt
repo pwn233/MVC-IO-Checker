@@ -1,0 +1,8 @@
+CREATE DATABASE accountdb;
+CREATE TABLE Persons (
+    id int  NOT NULL AUTO_INCREMENT,
+    account varchar(20),
+    io_contain int(150),
+    message_hashtag varchar(150),
+    PRIMARY KEY (id)
+);

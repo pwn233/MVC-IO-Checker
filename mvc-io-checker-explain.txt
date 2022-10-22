@@ -1,0 +1,24 @@
+mvc-io-checker
+
+time-used : 2:18:41
+
+ภาพรวม : view มีหน้าที่รับค่า 5 hashtag keyword และเช็คเบื้องต้นว่ามี special character หรือไม่ และ เปิดตารางเช็คอันดับ 10 อันดับจากมากไปน้อย
+ของการมีคำว่า IO โดยมีการเรียกใช้ control เพื่อเรียกใช้คำสั่งใน model ตั้งแต่การ set ค่า, สุ่มสร้าง account, สุ่มสร้าง message, สุ่มสร้าง hashtag 
+และ สุ่มใส่ hashtagโดยไม่เกินขอบเขตที่ระบุไว้ และ บันทึกลง database เพื่อ return กลับมายัง control จากนั้น control ก็จะ return กลับมา view
+เพื่อแจ้งให้ทราบว่า action ที่ทำ complete หรือไม่บน pop up
+
+ใน part ของ view
+	ทำหน้าที่รับ input hashtag ทีเป็น keyword 5 ตัว เพื่อให้ control ทำหน้าที่รับไปให้ model ในการ set hashtag keyword 
+นอกจากนั้น view ยังมี logic เบื้องต้นในการเช็คความถูกต้องของข้อมูลที่ input ในเรื่องของ special character และ 
+ยังทำหน้าที่ในการเป็น portal ให้ดูข้อมูล แบบ table ของ account ที่ contain critical word "IO" 10 อันดับแรกจากมากสุดไปน้อยสุด
+
+ใน part ของ control 
+	ทำหน้าที่เป็น traffic ระหว่างรับค่าจาก view ไปยัง model และ จัดระเบียบการเรียกใช้การทำงานใน model ใน part นี้ ( เหมือน
+การเรียก action นึงที่พ่วงต่ออีก action นึงไว้ด้วยกัน ) นอกจากนี้ยังคืนค่าสถานะ ว่า complete or fail จาก model ไปยัง view เพื่อให้ 
+user ทราบว่า insert ลง database สำเร็จหรือไม่
+
+ใน part ของ model
+	มี การเก็บค่า keyword ที่ได้รับมาและ generate account รวมถึง generate hashtag ขึ้นมาใหม่กับ สุ่มนำ hashtag ทีเป็น 
+keyword มาต่อท้าย โดย fix algorithm พาร์ทนี้ในการทำว่าขั้นต่ำ 30 alphabets และ ไม่เกิน 140 alphabets และยังมี method ในการ
+คำนวนปริมาณ critical word "IO" ว่า ใน message ที่มี hashtag นั้นมี I,O contain อยู่เท่าไร ก่อนจะบันทึกลง database แล้วจึง 
+respond กลับไปยัง control เพื่อกลับไปยัง view ให้แสดงผล
